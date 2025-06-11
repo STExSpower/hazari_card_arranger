@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hazari Card Arranger </title>
+  <title>Hazari Card Arranger</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <style>
@@ -67,6 +67,104 @@
       border: 1.5px solid #e3e9f7;
       transition: background 0.4s, color 0.3s;
     }
+    /* --- LOGIN FORM --- */
+    #loginContainer {
+      max-width: 400px;
+      margin: 80px auto 0 auto;
+      background: var(--container-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 36px 32px 28px 32px;
+      position: relative;
+      z-index: 2;
+      backdrop-filter: var(--container-blur);
+      border: 1.5px solid #e3e9f7;
+      text-align: center;
+      animation: fadeIn 0.7s;
+    }
+    #loginContainer h2 {
+      margin-top: 0;
+      font-size: 1.7em;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--primary);
+    }
+    .login-icon {
+      font-size: 2.5em;
+      color: var(--primary);
+      margin-bottom: 18px;
+      animation: lockBounce 1.2s infinite;
+      display: inline-block;
+      transition: color 0.3s;
+    }
+    @keyframes lockBounce {
+      0%, 100% { transform: translateY(0);}
+      20% { transform: translateY(-7px);}
+      40% { transform: translateY(0);}
+      60% { transform: translateY(-4px);}
+      80% { transform: translateY(0);}
+    }
+    .login-input {
+      width: 90%;
+      padding: 12px 14px;
+      margin: 10px 0 18px 0;
+      border-radius: 8px;
+      border: 2px solid #b3c6e0;
+      font-size: 17px;
+      font-family: var(--font-main);
+      background: rgba(255,255,255,0.95);
+      transition: border 0.2s;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .login-input:focus {
+      border: 2px solid var(--primary);
+    }
+    .login-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 13px 28px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 8px;
+      margin-bottom: 10px;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+      position: relative;
+      overflow: hidden;
+      touch-action: manipulation;
+      letter-spacing: 1px;
+    }
+    .login-btn .fa { margin-right: 7px; }
+    .login-btn:hover, .login-btn:active {
+      background: var(--primary-dark);
+      box-shadow: 0 4px 16px rgba(46,134,222,0.18);
+      transform: scale(1.04);
+    }
+    .login-error {
+      color: var(--danger);
+      font-weight: bold;
+      margin-bottom: 8px;
+      min-height: 24px;
+      letter-spacing: 0.5px;
+      animation: shake 0.4s;
+    }
+    @keyframes shake {
+      0% { transform: translateX(0);}
+      20% { transform: translateX(-8px);}
+      40% { transform: translateX(8px);}
+      60% { transform: translateX(-5px);}
+      80% { transform: translateX(5px);}
+      100% { transform: translateX(0);}
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95);}
+      to   { opacity: 1; transform: scale(1);}
+    }
+    /* --- END LOGIN FORM --- */
     .theme-selector {
       float: right;
       margin-bottom: 10px;
@@ -124,9 +222,8 @@
       box-shadow: 0 4px 16px rgba(46,134,222,0.18);
       transform: scale(1.08);
     }
-    /* --------- THIS IS THE IMPORTANT PART --------- */
     .card-button img {
-      border-radius: 0 !important; /* Remove curve */
+      border-radius: 0 !important;
       width: 38px;
       height: auto;
       display: block;
@@ -297,9 +394,11 @@
     }
     @media screen and (max-width: 900px) {
       .container { max-width: 99vw; padding: 12px 2vw 18px 2vw; }
+      #loginContainer { max-width: 99vw; padding: 12px 2vw 18px 2vw; }
     }
     @media screen and (max-width: 600px) {
       .container { padding: 6px 1vw 10px 1vw; }
+      #loginContainer { padding: 6px 1vw 10px 1vw; }
       .card-grid { grid-template-columns: repeat(6, 1fr); gap: 4px; }
       .card-button { width: 38px; height: 54px; font-size: 15px; }
       .card-button img { width: 28px !important; }
@@ -361,37 +460,93 @@
   </style>
 </head>
 <body class="theme-light">
-  <header>
-    <h1><i class="fa-solid fa-crown"></i> Hazari Card Arranger</h1>
-  </header>
-  <div class="container">
-    <div class="theme-selector">
-      <select id="themeSelect" aria-label="Theme Selector">
-        <option value="theme-light">☀️ Light</option>
-        <option value="theme-dark">🌙 Dark</option>
-        <option value="theme-blue">💧 Blue</option>
-        <option value="theme-green">🌿 Green</option>
-        <option value="theme-pink">🌸 Pink</option>
-      </select>
-    </div>
-    <div style="clear:both"></div>
-    <div id="cardPicker"></div>
-    <p>
-      <strong>Selected Cards (max 13):</strong>
-      <span id="cardCount" style="font-weight:normal;color:var(--primary);"></span>
-    </p>
-    <div id="selectedCards"></div>
-    <textarea id="cardInput" placeholder="Click cards above to add them..."></textarea>
-    <div id="inputError" style="color:var(--danger);font-weight:bold;margin-bottom:8px;"></div>
-    <button class="action" onclick="arrangeCards()"><i class="fa-solid fa-layer-group"></i>Arrange</button>
-    <button class="action" onclick="clearInput()"><i class="fa-solid fa-eraser"></i>Clear</button>
-    <button class="action" onclick="generateRandomHand()"><i class="fa-solid fa-shuffle"></i>Random Hand</button>
-    <div class="result" id="result"></div>
+  <div id="loginContainer">
+    <div class="login-icon"><i class="fa-solid fa-lock"></i></div>
+    <h2>Login</h2>
+    <form id="loginForm" autocomplete="off" onsubmit="return false;">
+      <input type="text" id="loginUser" class="login-input" placeholder="Username" autocomplete="off" required>
+      <input type="password" id="loginPass" class="login-input" placeholder="Password" autocomplete="off" required>
+      <div id="loginError" class="login-error"></div>
+      <button class="login-btn" id="loginBtn" type="submit"><i class="fa-solid fa-arrow-right-to-bracket"></i>Login</button>
+    </form>
   </div>
-  <footer>
-    <span>Made with <i class="fa-solid fa-heart" style="color:#e74c3c"></i> for Hazari lovers | <a href="https://github.com/" style="color:inherit;text-decoration:underline;">GitHub</a></span>
-  </footer>
+  <div id="mainApp" style="display:none;">
+    <header>
+      <h1><i class="fa-solid fa-crown"></i> Hazari Card Arranger</h1>
+    </header>
+    <div class="container">
+      <div class="theme-selector">
+        <select id="themeSelect" aria-label="Theme Selector">
+          <option value="theme-light">☀️ Light</option>
+          <option value="theme-dark">🌙 Dark</option>
+          <option value="theme-blue">💧 Blue</option>
+          <option value="theme-green">🌿 Green</option>
+          <option value="theme-pink">🌸 Pink</option>
+        </select>
+      </div>
+      <div style="clear:both"></div>
+      <div id="cardPicker"></div>
+      <p>
+        <strong>Selected Cards (max 13):</strong>
+        <span id="cardCount" style="font-weight:normal;color:var(--primary);"></span>
+      </p>
+      <div id="selectedCards"></div>
+      <textarea id="cardInput" placeholder="Click cards above to add them..."></textarea>
+      <div id="inputError" style="color:var(--danger);font-weight:bold;margin-bottom:8px;"></div>
+      <button class="action" onclick="arrangeCards()"><i class="fa-solid fa-layer-group"></i>Arrange</button>
+      <button class="action" onclick="clearInput()"><i class="fa-solid fa-eraser"></i>Clear</button>
+      <button class="action" onclick="generateRandomHand()"><i class="fa-solid fa-shuffle"></i>Random Hand</button>
+      <div class="result" id="result"></div>
+    </div>
+    <footer>
+      <span>Made with <i class="fa-solid fa-heart" style="color:#e74c3c"></i> for Hazari lovers | <a href="https://github.com/" style="color:inherit;text-decoration:underline;">GitHub</a></span>
+    </footer>
+  </div>
   <script>
+    // --- LOGIN SYSTEM ---
+    const loginForm = document.getElementById('loginForm');
+    const loginContainer = document.getElementById('loginContainer');
+    const mainApp = document.getElementById('mainApp');
+    const loginError = document.getElementById('loginError');
+    const loginBtn = document.getElementById('loginBtn');
+    let loginTries = 0;
+
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      loginError.textContent = "";
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Logging in...';
+      setTimeout(() => {
+        const user = document.getElementById('loginUser').value.trim();
+        const pass = document.getElementById('loginPass').value;
+        if (user === "akib" && pass === "1234") {
+          // Success
+          loginContainer.style.display = "none";
+          mainApp.style.display = "";
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        } else {
+          loginTries++;
+          loginError.textContent = "Invalid username or password!";
+          loginError.style.animation = "shake 0.4s";
+          setTimeout(() => loginError.style.animation = "", 400);
+          loginBtn.disabled = false;
+          loginBtn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i>Login';
+        }
+      }, 700);
+    });
+
+    // Allow Enter key to submit
+    document.getElementById('loginUser').addEventListener('keydown', function(e){
+      if(e.key === "Enter") document.getElementById('loginPass').focus();
+    });
+    document.getElementById('loginPass').addEventListener('keydown', function(e){
+      if(e.key === "Enter") loginForm.dispatchEvent(new Event('submit'));
+    });
+
+    // --- END LOGIN SYSTEM ---
+
+    // --- MAIN APP JS (unchanged) ---
     const suits = { "S": "♠", "H": "♥", "D": "♦", "C": "♣" };
     const suitNames = {
       "S": "Spades ♠", "H": "Hearts ♥", "D": "Diamonds ♦", "C": "Clubs ♣"
@@ -599,12 +754,18 @@
     }
     // Debounce input validation for fast typing
     let debounceTimer;
-    document.getElementById("cardInput").addEventListener("input", function() {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(updateSelectedCards, 120);
-    });
-    document.getElementById("themeSelect").addEventListener("change", function() {
-      document.body.className = this.value;
+    document.addEventListener("DOMContentLoaded", function() {
+      if(document.getElementById("cardInput")){
+        document.getElementById("cardInput").addEventListener("input", function() {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(updateSelectedCards, 120);
+        });
+      }
+      if(document.getElementById("themeSelect")){
+        document.getElementById("themeSelect").addEventListener("change", function() {
+          document.body.className = this.value;
+        });
+      }
     });
     function generateRandomHand() {
       const allCards = [];
@@ -622,8 +783,20 @@
       updateSelectedCards();
       document.getElementById("result").innerHTML = "";
     }
-    generateCardButtons();
-    updateSelectedCards();
+    // Only generate card buttons after login
+    function afterLoginInit() {
+      generateCardButtons();
+      updateSelectedCards();
+    }
+    // If already logged in (for dev), show main app
+    if(mainApp.style.display !== "none") afterLoginInit();
+    // When login is successful, call afterLoginInit
+    const observer = new MutationObserver(function(mutations){
+      if(mainApp.style.display !== "none" && !document.getElementById("cardPicker").hasChildNodes()){
+        afterLoginInit();
+      }
+    });
+    observer.observe(mainApp, {attributes:true, childList:false, subtree:false});
   </script>
 </body>
 </html>
