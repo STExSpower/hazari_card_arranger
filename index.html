@@ -5,46 +5,157 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hazari Card Arranger</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
-    h1 { text-align: center; }
-    textarea { width: 100%; height: 100px; font-size: 16px; padding: 10px; }
-    button { padding: 5px 10px; margin: 2px; cursor: pointer; }
-    .card-button {
-      font-family: 'Courier New', monospace;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      min-width: 42px;
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #ece9e6, #ffffff);
+      color: #333;
     }
+
+    header {
+      background: #2e86de;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 { margin: 0; font-size: 28px; }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
     .suit-title {
-      margin-top: 10px;
-      margin-bottom: 5px;
+      font-size: 18px;
       font-weight: bold;
+      margin: 20px 0 5px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(45px, 1fr));
+      gap: 8px;
+    }
+
+    .card-button {
+      padding: 4px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #f7f7f7;
+      cursor: pointer;
+      transition: background 0.2s;
+      height: 48px;
+      width: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-button:hover {
+      background: #dff3ff;
+    }
+
+    textarea {
+      width: 100%;
+      height: 80px;
+      padding: 10px;
       font-size: 16px;
+      margin: 15px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
+
+    button.action {
+      background: #2e86de;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      margin-right: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button.action:hover {
+      background: #145fa8;
+    }
+
     .result {
-      background: #fff;
-      padding: 15px;
-      margin-top: 20px;
+      margin-top: 25px;
+      padding: 20px;
+      background: #f9f9f9;
       border-radius: 8px;
+      border-left: 4px solid #2e86de;
     }
-    .set { 
-      margin-bottom: 10px; 
-      font-size: 18px; 
+
+    .set {
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .card-chip {
+      display: inline-block;
+      background: #e3e9f7;
+      color: #222;
+      border-radius: 12px;
+      padding: 2px 6px 2px 2px;
+      margin: 2px 4px 2px 0;
+      font-size: 15px;
+      cursor: pointer;
+      border: 1px solid #b3c6e0;
+      transition: background 0.2s;
+      vertical-align: middle;
+    }
+    .card-chip:hover {
+      background: #d0e6ff;
+    }
+    .card-chip img {
+      pointer-events: none;
+      vertical-align: middle;
+    }
+    .card-button img {
+      pointer-events: none;
+      vertical-align: middle;
+    }
+
+    #selectedCards {
+      margin-bottom: 10px;
+      min-height: 40px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .card-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Hazari Card Arranger</h1>
+  <header>
+    <h1>Hazari Card Arranger</h1>
+  </header>
 
-  <div class="card-picker" id="cardPicker"></div>
+  <div class="container">
+    <div id="cardPicker"></div>
 
-  <p>Selected Cards (max 13):</p>
-  <textarea id="cardInput" placeholder="Click cards above to add them..."></textarea><br>
-  <button onclick="arrangeCards()">Arrange</button>
-  <button onclick="clearInput()">Clear</button>
+    <p><strong>Selected Cards (max 13):</strong></p>
+    <div id="selectedCards"></div>
+    <textarea id="cardInput" placeholder="Click cards above to add them..."></textarea>
 
-  <div class="result" id="result"></div>
+    <button class="action" onclick="arrangeCards()">Arrange</button>
+    <button class="action" onclick="clearInput()">Clear</button>
+
+    <div class="result" id="result"></div>
+  </div>
 
   <script>
     const suits = { "S": "♠", "H": "♥", "D": "♦", "C": "♣" };
@@ -71,6 +182,13 @@
     function cardSymbol(card) {
       const [rank, suit] = parseCard(card);
       return rank + suits[suit];
+    }
+
+    // Card image URL (10 is '0' in API)
+    function cardImageURL(card) {
+      let [rank, suit] = parseCard(card);
+      if (rank === "10") rank = "0";
+      return `https://deckofcardsapi.com/static/img/${rank}${suit}.png`;
     }
 
     function isConsecutive(values) {
@@ -121,10 +239,22 @@
     }
 
     function arrangeCards() {
-      const input = document.getElementById("cardInput").value.trim().split(/\s+/);
+      const input = document.getElementById("cardInput").value.trim().split(/\s+/).filter(c => c !== "");
       if (input.length !== 13) {
         alert("Please enter exactly 13 cards.");
         return;
+      }
+      // Validate unique and valid cards
+      const unique = new Set(input);
+      if (unique.size !== 13) {
+        alert("Duplicate cards detected or invalid input. Please enter 13 unique cards.");
+        return;
+      }
+      for (let card of input) {
+        if (!/^(A|K|Q|J|10|9|8|7|6|5|4|3|2)[SHDC]$/.test(card)) {
+          alert(`Invalid card: ${card}. Use format like AS, 10H, QC, etc.`);
+          return;
+        }
       }
 
       const allArrangements = tryCombinations(input, [3,3,3,4]);
@@ -142,30 +272,38 @@
         }
       }
 
-      // ✅ সাধারন কম্বো র‍্যাংক অনুসারে সাজানো
-      bestSet.sort((a, b) => {
-        const [aType, aVals] = getCombinationType(a);
-        const [bType, bVals] = getCombinationType(b);
-        const aRank = comboRank[aType];
-        const bRank = comboRank[bType];
-        if (aRank === bRank) {
-          const aSum = aVals.reduce((x, y) => x + y, 0);
-          const bSum = bVals.reduce((x, y) => x + y, 0);
-          return bSum - aSum;
-        }
-        return bRank - aRank;
-      });
-
       const result = document.getElementById("result");
-      result.innerHTML = "<h2>Best Arrangement</h2>" + bestSet.map((set, i) => {
-        const [type] = getCombinationType(set);
-        const showCards = set.map(card => cardSymbol(card)).join(" ");
-        return `<div class="set">Set ${i+1} (<strong>${type}</strong>): ${showCards}</div>`;
-      }).join("");
+      if (!bestSet) {
+        result.innerHTML = "<b>No arrangement found.</b>";
+        return;
+      }
+      result.innerHTML = "<h2>Best Arrangement</h2>" + 
+        [...bestSet]
+          .map((set, i) => {
+            const [type, values] = getCombinationType(set);
+            return { set, type, values, rank: comboRank[type], index: i };
+          })
+          .sort((a, b) => {
+            if (b.rank === a.rank) {
+              const aSum = a.values.reduce((x, y) => x + y, 0);
+              const bSum = b.values.reduce((x, y) => x + y, 0);
+              return bSum - aSum;
+            }
+            return b.rank - a.rank;
+          })
+          .map((entry, i) => {
+            const cards = entry.set.map(card => 
+              `<img src="${cardImageURL(card)}" alt="${card}" style="width:38px;vertical-align:middle;">`
+            ).join(" ");
+            return `<div class="set">Set ${i+1} (<strong>${entry.type}</strong>): ${cards}</div>`;
+          })
+          .join("");
     }
 
     function clearInput() {
       document.getElementById("cardInput").value = "";
+      updateSelectedCards();
+      document.getElementById("result").innerHTML = "";
     }
 
     function generateCardButtons() {
@@ -176,12 +314,15 @@
         title.innerHTML = suitNames[suit];
         container.appendChild(title);
 
+        const grid = document.createElement('div');
+        grid.className = 'card-grid';
+
         rankList.forEach(rank => {
           const card = rank + suit;
           const btn = document.createElement("button");
           btn.className = "card-button";
-          btn.innerHTML = `${rank}${suits[suit]}`;
-          btn.style.color = redSuits.includes(suit) ? "red" : "black";
+          btn.setAttribute("aria-label", `${rank} of ${suitNames[suit]}`);
+          btn.innerHTML = `<img src="${cardImageURL(card)}" alt="${card}" style="width:38px;vertical-align:middle;">`;
           btn.onclick = function () {
             const input = document.getElementById("cardInput");
             let current = input.value.trim().split(/\s+/).filter(c => c !== "");
@@ -189,17 +330,44 @@
               alert("You've already selected 13 cards.");
               return;
             }
+            if (current.includes(card)) {
+              alert("This card is already selected.");
+              return;
+            }
             current.push(card);
             input.value = current.join(" ");
+            updateSelectedCards();
           };
-          container.appendChild(btn);
+          grid.appendChild(btn);
         });
 
-        container.appendChild(document.createElement("br"));
+        container.appendChild(grid);
       });
     }
 
+    function updateSelectedCards() {
+      const input = document.getElementById("cardInput");
+      const selectedDiv = document.getElementById("selectedCards");
+      let current = input.value.trim().split(/\s+/).filter(c => c !== "");
+      selectedDiv.innerHTML = current.map(card => 
+        `<span class="card-chip" onclick="removeCard('${card}')">
+          <img src="${cardImageURL(card)}" alt="${card}" style="width:32px;vertical-align:middle;">
+          ×
+        </span>`
+      ).join(" ");
+    }
+
+    function removeCard(card) {
+      const input = document.getElementById("cardInput");
+      let current = input.value.trim().split(/\s+/).filter(c => c !== "" && c !== card);
+      input.value = current.join(" ");
+      updateSelectedCards();
+    }
+
+    document.getElementById("cardInput").addEventListener("input", updateSelectedCards);
+
     generateCardButtons();
+    updateSelectedCards();
   </script>
 </body>
 </html>
