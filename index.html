@@ -3,189 +3,249 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hazari Card Arranger</title>
+  <title>Hazari Card Arranger (Super Fast)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <style>
-    * { box-sizing: border-box; }
-
+    :root {
+      --main-bg: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+      --container-bg: rgba(255,255,255,0.85);
+      --container-blur: blur(8px);
+      --primary: #2e86de;
+      --primary-dark: #145fa8;
+      --accent: #4a90e2;
+      --danger: #e74c3c;
+      --warning: #f1c40f;
+      --success: #27ae60;
+      --shadow: 0 8px 32px 0 rgba(31,38,135,0.12);
+      --border-radius: 18px;
+      --font-main: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    }
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: var(--font-main);
       margin: 0;
       padding: 0;
-      background: linear-gradient(to right, #ece9e6, #ffffff);
-      color: #333;
+      min-height: 100vh;
+      background: var(--main-bg);
+      color: #222;
+      transition: background 0.4s, color 0.3s;
+      position: relative;
+      overflow-x: hidden;
     }
-
+    body:before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 0;
+      background: url('data:image/svg+xml;utf8,<svg width="100" height="100" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="%23b3c6e0" fill-opacity="0.15"/></svg>');
+      opacity: 0.5;
+      pointer-events: none;
+    }
     header {
-      background: #2e86de;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(46,134,222,0.95);
       color: white;
-      padding: 20px 0;
+      padding: 18px 0 12px 0;
       text-align: center;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 16px rgba(46,134,222,0.08);
+      font-size: 1.2em;
+      letter-spacing: 1px;
     }
-
-    h1 { margin: 0; font-size: 28px; }
-
+    h1 { margin: 0; font-size: 2.1em; font-weight: 700; letter-spacing: 2px; }
     .container {
-      max-width: 900px;
-      margin: 30px auto;
-      background: white;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      max-width: 950px;
+      margin: 36px auto 24px auto;
+      background: var(--container-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 32px 32px 24px 32px;
+      position: relative;
+      z-index: 1;
+      backdrop-filter: var(--container-blur);
+      border: 1.5px solid #e3e9f7;
+      transition: background 0.4s, color 0.3s;
     }
-
+    .theme-selector {
+      float: right;
+      margin-bottom: 10px;
+      margin-left: 10px;
+    }
+    .theme-selector select {
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1.5px solid #b3c6e0;
+      font-size: 16px;
+      background: #f7f7f7;
+      color: #222;
+      cursor: pointer;
+      font-family: var(--font-main);
+      font-weight: 500;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .theme-selector select:focus {
+      border: 2px solid var(--primary);
+    }
     .suit-title {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: bold;
-      margin: 20px 0 5px;
+      margin: 22px 0 7px;
+      letter-spacing: 1px;
     }
-
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(45px, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+      gap: 10px;
     }
-
     .card-button {
       padding: 4px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      border: 2px solid #ccc;
+      border-radius: 12px;
       background: #f7f7f7;
       cursor: pointer;
-      transition: background 0.2s;
-      height: 48px;
-      width: 42px;
+      transition: background 0.2s, border 0.2s, box-shadow 0.2s, transform 0.15s;
+      height: 56px;
+      width: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+      position: relative;
+      overflow: hidden;
+      touch-action: manipulation;
     }
-
-    .card-button:hover {
+    .card-button:hover, .card-button:active {
       background: #dff3ff;
+      border: 2.5px solid var(--primary);
+      box-shadow: 0 4px 16px rgba(46,134,222,0.18);
+      transform: scale(1.08);
     }
-
     textarea {
       width: 100%;
       height: 80px;
-      padding: 10px;
-      font-size: 16px;
-      margin: 15px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      padding: 12px;
+      font-size: 17px;
+      margin: 18px 0 8px 0;
+      border-radius: 10px;
+      border: 2px solid #ccc;
+      transition: border 0.2s;
+      resize: vertical;
+      font-family: var(--font-main);
+      background: rgba(255,255,255,0.95);
     }
-
+    textarea.invalid {
+      border: 2.5px solid var(--danger);
+      background: #fff6f6;
+    }
     button.action {
-      background: #2e86de;
+      background: var(--primary);
       color: white;
       border: none;
-      padding: 10px 16px;
-      margin-right: 10px;
-      border-radius: 6px;
+      padding: 15px 22px;
+      margin-right: 12px;
+      border-radius: 10px;
       cursor: pointer;
       font-weight: bold;
-    }
-
-    button.action:hover {
-      background: #145fa8;
-    }
-
-    .result {
-      margin-top: 25px;
-      padding: 20px;
-      background: #f9f9f9;
-      border-radius: 8px;
-      border-left: 4px solid #2e86de;
-    }
-
-    .set {
-      margin-bottom: 15px;
       font-size: 18px;
+      margin-bottom: 10px;
+      margin-top: 5px;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+      position: relative;
+      overflow: hidden;
+      touch-action: manipulation;
     }
-
+    button.action .fa { margin-right: 6px; }
+    button.action:hover, button.action:active {
+      background: var(--primary-dark);
+      box-shadow: 0 4px 16px rgba(46,134,222,0.18);
+      transform: scale(1.04);
+    }
+    .result {
+      margin-top: 28px;
+      padding: 22px;
+      background: #f9f9f9;
+      border-radius: 12px;
+      border-left: 5px solid var(--primary);
+      font-size: 18px;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+      min-height: 40px;
+    }
+    .set {
+      margin-bottom: 18px;
+      font-size: 19px;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
     .card-chip {
       display: inline-block;
-      background: #e3e9f7;
+      background: linear-gradient(135deg, #e3e9f7 60%, #d0e6ff 100%);
       color: #222;
-      border-radius: 12px;
-      padding: 2px 6px 2px 2px;
-      margin: 2px 4px 2px 0;
-      font-size: 15px;
-      cursor: pointer;
-      border: 1px solid #b3c6e0;
-      transition: background 0.2s;
+      border-radius: 16px;
+      padding: 4px 12px 4px 4px;
+      margin: 3px 8px 3px 0;
+      font-size: 20px;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+      border: 2px solid #b3c6e0;
+      transition: box-shadow 0.2s, transform 0.2s, background 0.2s, border 0.2s;
       vertical-align: middle;
+      min-width: 44px;
+      min-height: 38px;
+      line-height: 38px;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
     }
     .card-chip:hover {
-      background: #d0e6ff;
+      box-shadow: 0 4px 16px rgba(46,134,222,0.18);
+      transform: scale(1.08);
+      background: linear-gradient(135deg, #d0e6ff 60%, #e3e9f7 100%);
+      border: 2.5px solid var(--primary);
     }
     .card-chip img {
       pointer-events: none;
       vertical-align: middle;
+      margin-right: 2px;
     }
-    .card-button img {
-      pointer-events: none;
-      vertical-align: middle;
+    .card-chip.heart, .card-chip.diamond { color: var(--danger); }
+    .card-chip.spade, .card-chip.club { color: #222; }
+    .card-chip.invalid {
+      background: #ffeaea;
+      border: 2.5px solid var(--danger);
+      color: var(--danger);
     }
-
+    .card-chip.duplicate {
+      background: #fff3cd;
+      border: 2.5px solid var(--warning);
+      color: #b8860b;
+    }
+    .card-chip.animated-in {
+      animation: cardFadeIn 0.3s;
+    }
+    .card-chip.animated-out {
+      animation: cardFadeOut 0.3s;
+    }
     #selectedCards {
       margin-bottom: 10px;
       min-height: 40px;
     }
-
-    @media screen and (max-width: 600px) {
-      .card-grid {
-        grid-template-columns: repeat(6, 1fr);
-      }
+    .invalid-card {
+      color: var(--danger);
+      font-weight: bold;
+      background: #fff6f6;
+      border-radius: 4px;
+      padding: 0 3px;
     }
-
-    /* DARK MODE STYLES */
-    body.dark {
-      background: linear-gradient(to right, #232526, #414345);
-      color: #e0e6f0;
+    .duplicate-card {
+      color: #b8860b;
+      font-weight: bold;
+      background: #fffbe6;
+      border-radius: 4px;
+      padding: 0 3px;
     }
-    body.dark header {
-      background: #111c2e;
-      color: #e0e6f0;
-    }
-    body.dark .container {
-      background: #232b38;
-      color: #e0e6f0;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-    }
-    body.dark .result {
-      background: #1a202a;
-      border-left: 4px solid #4a90e2;
-    }
-    body.dark .card-button {
-      background: #2a3442;
-      border: 1px solid #3a4a5e;
-      color: #e0e6f0;
-    }
-    body.dark .card-button:hover {
-      background: #3a4a5e;
-    }
-    body.dark textarea {
-      background: #232b38;
-      color: #e0e6f0;
-      border: 1px solid #3a4a5e;
-    }
-    body.dark .action {
-      background: #4a90e2;
-      color: #fff;
-    }
-    body.dark .action:hover {
-      background: #2e86de;
-    }
-    body.dark .card-chip {
-      background: #2a3442;
-      color: #e0e6f0;
-      border: 1px solid #3a4a5e;
-    }
-    body.dark .card-chip:hover {
-      background: #3a4a5e;
-    }
-
-    /* Card Animation */
     @keyframes cardFadeIn {
       from { opacity: 0; transform: scale(0.8);}
       to   { opacity: 1; transform: scale(1);}
@@ -194,45 +254,117 @@
       from { opacity: 1; transform: scale(1);}
       to   { opacity: 0; transform: scale(0.8);}
     }
-    .card-chip.animated-in {
-      animation: cardFadeIn 0.3s;
+    footer {
+      text-align: center;
+      padding: 18px 0 10px 0;
+      color: #888;
+      font-size: 1em;
+      background: transparent;
+      letter-spacing: 1px;
+      margin-top: 30px;
+      z-index: 2;
+      position: relative;
     }
-    .card-chip.animated-out {
-      animation: cardFadeOut 0.3s;
+    @media screen and (max-width: 900px) {
+      .container { max-width: 99vw; padding: 12px 2vw 18px 2vw; }
     }
+    @media screen and (max-width: 600px) {
+      .container { padding: 6px 1vw 10px 1vw; }
+      .card-grid { grid-template-columns: repeat(6, 1fr); gap: 4px; }
+      .card-button { width: 38px; height: 38px; font-size: 15px; }
+      button.action { font-size: 15px; padding: 10px 10px; }
+      .card-chip { font-size: 15px; min-width: 32px; min-height: 28px; }
+      .result { font-size: 15px; padding: 10px; }
+      textarea { font-size: 15px; }
+      .theme-selector select { font-size: 13px; }
+      h1 { font-size: 1.3em; }
+    }
+    /* Theme overrides (as before, omitted for brevity) */
+    body.theme-dark { background: linear-gradient(135deg, #232526 0%, #414345 100%); color: #e0e6f0; }
+    body.theme-dark header { background: rgba(17,28,46,0.98); color: #e0e6f0; }
+    body.theme-dark .container { background: rgba(35,43,56,0.92); color: #e0e6f0; border: 1.5px solid #3a4a5e; }
+    body.theme-dark .result { background: #1a202a; border-left: 5px solid #4a90e2; }
+    body.theme-dark .card-button { background: #2a3442; border: 1.5px solid #3a4a5e; color: #e0e6f0; }
+    body.theme-dark .card-button:hover { background: #3a4a5e; }
+    body.theme-dark textarea { background: #232b38; color: #e0e6f0; border: 1.5px solid #3a4a5e; }
+    body.theme-dark .action { background: #4a90e2; color: #fff; }
+    body.theme-dark .action:hover { background: #2e86de; }
+    body.theme-dark .card-chip { background: #2a3442; color: #e0e6f0; border: 1.5px solid #3a4a5e; }
+    body.theme-dark .card-chip:hover { background: #3a4a5e; }
+    body.theme-dark .card-chip.invalid { background: #4a2323; border: 2.5px solid var(--danger); color: var(--danger); }
+    body.theme-dark .card-chip.duplicate { background: #4a3c23; border: 2.5px solid var(--warning); color: var(--warning); }
+    body.theme-blue { background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%); color: #1a237e; }
+    body.theme-blue header { background: #1976d2; color: #fff; }
+    body.theme-blue .container { background: rgba(227,242,253,0.95); color: #1a237e; }
+    body.theme-blue .result { background: #e8f0fe; border-left: 5px solid #1976d2; }
+    body.theme-blue .card-button { background: #bbdefb; border: 1.5px solid #90caf9; color: #1a237e; }
+    body.theme-blue .card-button:hover { background: #90caf9; }
+    body.theme-blue textarea { background: #e3f2fd; color: #1a237e; border: 1.5px solid #90caf9; }
+    body.theme-blue .action { background: #1976d2; color: #fff; }
+    body.theme-blue .action:hover { background: #1565c0; }
+    body.theme-blue .card-chip { background: #bbdefb; color: #1a237e; border: 1.5px solid #90caf9; }
+    body.theme-blue .card-chip:hover { background: #90caf9; }
+    body.theme-green { background: linear-gradient(135deg, #e0f7e9 0%, #c8e6c9 100%); color: #1b5e20; }
+    body.theme-green header { background: #388e3c; color: #fff; }
+    body.theme-green .container { background: rgba(232,245,233,0.95); color: #1b5e20; }
+    body.theme-green .result { background: #e0f2f1; border-left: 5px solid #388e3c; }
+    body.theme-green .card-button { background: #c8e6c9; border: 1.5px solid #81c784; color: #1b5e20; }
+    body.theme-green .card-button:hover { background: #81c784; }
+    body.theme-green textarea { background: #e8f5e9; color: #1b5e20; border: 1.5px solid #81c784; }
+    body.theme-green .action { background: #388e3c; color: #fff; }
+    body.theme-green .action:hover { background: #2e7031; }
+    body.theme-green .card-chip { background: #c8e6c9; color: #1b5e20; border: 1.5px solid #81c784; }
+    body.theme-green .card-chip:hover { background: #81c784; }
+    body.theme-pink { background: linear-gradient(135deg, #ffe0e9 0%, #f8bbd0 100%); color: #880e4f; }
+    body.theme-pink header { background: #d81b60; color: #fff; }
+    body.theme-pink .container { background: rgba(252,228,236,0.95); color: #880e4f; }
+    body.theme-pink .result { background: #f8bbd0; border-left: 5px solid #d81b60; }
+    body.theme-pink .card-button { background: #f8bbd0; border: 1.5px solid #f06292; color: #880e4f; }
+    body.theme-pink .card-button:hover { background: #f06292; }
+    body.theme-pink textarea { background: #fce4ec; color: #880e4f; border: 1.5px solid #f06292; }
+    body.theme-pink .action { background: #d81b60; color: #fff; }
+    body.theme-pink .action:hover { background: #ad1457; }
+    body.theme-pink .card-chip { background: #f8bbd0; color: #880e4f; border: 1.5px solid #f06292; }
+    body.theme-pink .card-chip:hover { background: #f06292; }
   </style>
 </head>
-<body>
+<body class="theme-light">
   <header>
-    <h1>Hazari Card Arranger</h1>
+    <h1><i class="fa-solid fa-crown"></i> Hazari Card Arranger</h1>
   </header>
-
   <div class="container">
-    <button class="action" id="toggleDark" style="float:right;margin-bottom:10px;">🌙 Dark Mode</button>
+    <div class="theme-selector">
+      <select id="themeSelect" aria-label="Theme Selector">
+        <option value="theme-light">☀️ Light</option>
+        <option value="theme-dark">🌙 Dark</option>
+        <option value="theme-blue">💧 Blue</option>
+        <option value="theme-green">🌿 Green</option>
+        <option value="theme-pink">🌸 Pink</option>
+      </select>
+    </div>
     <div style="clear:both"></div>
-
     <div id="cardPicker"></div>
-
     <p>
       <strong>Selected Cards (max 13):</strong>
-      <span id="cardCount" style="font-weight:normal;color:#2e86de;"></span>
+      <span id="cardCount" style="font-weight:normal;color:var(--primary);"></span>
     </p>
     <div id="selectedCards"></div>
     <textarea id="cardInput" placeholder="Click cards above to add them..."></textarea>
-
-    <button class="action" onclick="arrangeCards()">Arrange</button>
-    <button class="action" onclick="clearInput()">Clear</button>
-    <button class="action" onclick="generateRandomHand()">Random Hand</button>
-
+    <div id="inputError" style="color:var(--danger);font-weight:bold;margin-bottom:8px;"></div>
+    <button class="action" onclick="arrangeCards()"><i class="fa-solid fa-layer-group"></i>Arrange</button>
+    <button class="action" onclick="clearInput()"><i class="fa-solid fa-eraser"></i>Clear</button>
+    <button class="action" onclick="generateRandomHand()"><i class="fa-solid fa-shuffle"></i>Random Hand</button>
     <div class="result" id="result"></div>
   </div>
-
+  <footer>
+    <span>Made with <i class="fa-solid fa-heart" style="color:#e74c3c"></i> for Hazari lovers | <a href="https://github.com/" style="color:inherit;text-decoration:underline;">GitHub</a></span>
+  </footer>
   <script>
     const suits = { "S": "♠", "H": "♥", "D": "♦", "C": "♣" };
     const suitNames = {
       "S": "Spades ♠", "H": "Hearts ♥", "D": "Diamonds ♦", "C": "Clubs ♣"
     };
-    const redSuits = ["H", "D"];
+    const suitClass = { "S": "spade", "H": "heart", "D": "diamond", "C": "club" };
     const suitList = ["S", "H", "D", "C"];
     const rankList = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"];
     const rankOrder = {"A": 14, "K":13, "Q":12, "J":11, "10":10, "9":9, "8":8, "7":7, "6":6, "5":5, "4":4, "3":3, "2":2};
@@ -248,19 +380,15 @@
     function parseCard(card) {
       return card.length === 3 ? [card.slice(0,2), card[2]] : [card[0], card[1]];
     }
-
     function cardSymbol(card) {
       const [rank, suit] = parseCard(card);
       return rank + suits[suit];
     }
-
-    // Card image URL (10 is '0' in API)
     function cardImageURL(card) {
       let [rank, suit] = parseCard(card);
       if (rank === "10") rank = "0";
       return `https://deckofcardsapi.com/static/img/${rank}${suit}.png`;
     }
-
     function isConsecutive(values) {
       const sorted = [...values].sort((a,b) => a - b);
       if (sorted[2] - sorted[0] === 2 && new Set(sorted).size === 3) return true;
@@ -270,7 +398,6 @@
       }
       return false;
     }
-
     function getCombinationType(cards) {
       const ranks = cards.map(c => parseCard(c)[0]);
       const suits = cards.map(c => parseCard(c)[1]);
@@ -283,99 +410,57 @@
       if (Object.values(rankCount).includes(2)) return ["Pair", values];
       return ["Indi", values];
     }
-
     function rankCombo(cards) {
       const [type, vals] = getCombinationType(cards);
       return [comboRank[type], vals];
     }
-
-    function tryCombinations(cards, sizes) {
-      if (!sizes.length) return [[]];
-      let results = [];
-      let size = sizes[0];
-      function combine(arr, k, start=0, path=[]) {
-        if (path.length === k) {
-          const rest = arr.filter(x => !path.includes(x));
-          const subresults = tryCombinations(rest, sizes.slice(1));
-          for (let sub of subresults) results.push([path, ...sub]);
-          return;
-        }
-        for (let i = start; i < arr.length; i++) {
-          combine(arr, k, i + 1, [...path, arr[i]]);
-        }
-      }
-      combine(cards, size);
-      return results;
-    }
-
+    // Super fast greedy arrangement
     function arrangeCards() {
       const input = document.getElementById("cardInput").value.trim().split(/\s+/).filter(c => c !== "");
-      if (input.length !== 13) {
-        alert("Please enter exactly 13 cards.");
+      const {invalidCards, duplicateCards} = validateCards(input);
+      if (input.length !== 13 || invalidCards.length > 0 || duplicateCards.length > 0) {
+        alert("Please enter exactly 13 valid, unique cards.");
         return;
       }
-      // Validate unique and valid cards
-      const unique = new Set(input);
-      if (unique.size !== 13) {
-        alert("Duplicate cards detected or invalid input. Please enter 13 unique cards.");
-        return;
-      }
-      for (let card of input) {
-        if (!/^(A|K|Q|J|10|9|8|7|6|5|4|3|2)[SHDC]$/.test(card)) {
-          alert(`Invalid card: ${card}. Use format like AS, 10H, QC, etc.`);
-          return;
+      let cards = [...input];
+      let sets = [];
+      function findBestSet(n) {
+        let best = null, bestRank = -1, bestVals = [];
+        let len = cards.length;
+        let indices = Array.from({length: len}, (_, i) => i);
+        function* combinations(arr, k, start=0, path=[]) {
+          if (path.length === k) yield path;
+          else for (let i = start; i < arr.length; i++) yield* combinations(arr, k, i+1, [...path, arr[i]]);
         }
-      }
-
-      const allArrangements = tryCombinations(input, [3,3,3,4]);
-      let bestScore = -1;
-      let bestSet = null;
-
-      for (const sets of allArrangements) {
-        const score = sets.reduce((sum, group) => {
-          const [r, vals] = rankCombo(group);
-          return sum + r * 100000 + vals.reduce((a,b) => a + b, 0);
-        }, 0);
-        if (score > bestScore) {
-          bestScore = score;
-          bestSet = sets;
+        for (let idxs of combinations(indices, n)) {
+          let set = idxs.map(i => cards[i]);
+          let [rank, vals] = rankCombo(set);
+          if (rank > bestRank || (rank === bestRank && vals > bestVals)) {
+            best = set; bestRank = rank; bestVals = vals;
+          }
         }
+        return best;
       }
-
+      for (let size of [3,3,3,4]) {
+        let set = findBestSet(size);
+        sets.push(set);
+        cards = cards.filter(c => !set.includes(c));
+      }
+      // Show result as before
       const result = document.getElementById("result");
-      if (!bestSet) {
-        result.innerHTML = "<b>No arrangement found.</b>";
-        return;
-      }
-      result.innerHTML = "<h2>Best Arrangement</h2>" + 
-        [...bestSet]
-          .map((set, i) => {
-            const [type, values] = getCombinationType(set);
-            return { set, type, values, rank: comboRank[type], index: i };
-          })
-          .sort((a, b) => {
-            if (b.rank === a.rank) {
-              const aSum = a.values.reduce((x, y) => x + y, 0);
-              const bSum = b.values.reduce((x, y) => x + y, 0);
-              return bSum - aSum;
-            }
-            return b.rank - a.rank;
-          })
-          .map((entry, i) => {
-            const cards = entry.set.map(card => 
-              `<img src="${cardImageURL(card)}" alt="${card}" style="width:38px;vertical-align:middle;">`
-            ).join(" ");
-            return `<div class="set">Set ${i+1} (<strong>${entry.type}</strong>): ${cards}</div>`;
-          })
-          .join("");
+      result.innerHTML = "<h2>Best Arrangement (Super Fast)</h2>" + 
+        sets.map((set, i) => {
+          const [type, values] = getCombinationType(set);
+          return `<div class="set">Set ${i+1} (<strong>${type}</strong>): ${
+            set.map(card => `<img src="${cardImageURL(card)}" alt="${card}" style="width:38px;vertical-align:middle;">`).join(" ")
+          }</div>`;
+        }).join("");
     }
-
     function clearInput() {
       document.getElementById("cardInput").value = "";
       updateSelectedCards();
       document.getElementById("result").innerHTML = "";
     }
-
     function generateCardButtons() {
       const container = document.getElementById("cardPicker");
       suitList.forEach(suit => {
@@ -383,10 +468,8 @@
         title.className = 'suit-title';
         title.innerHTML = suitNames[suit];
         container.appendChild(title);
-
         const grid = document.createElement('div');
         grid.className = 'card-grid';
-
         rankList.forEach(rank => {
           const card = rank + suit;
           const btn = document.createElement("button");
@@ -410,28 +493,37 @@
           };
           grid.appendChild(btn);
         });
-
         container.appendChild(grid);
       });
     }
-
-    // Card Animation: keep track of last selected cards
     let lastSelected = [];
-
+    function validateCards(cards) {
+      const validPattern = /^(A|K|Q|J|10|9|8|7|6|5|4|3|2)[SHDC]$/;
+      let invalidCards = [];
+      let duplicateCards = [];
+      let seen = {};
+      cards.forEach(card => {
+        if (!validPattern.test(card)) invalidCards.push(card);
+        else if (seen[card]) duplicateCards.push(card);
+        else seen[card] = true;
+      });
+      return {invalidCards, duplicateCards};
+    }
     function updateSelectedCards() {
       const input = document.getElementById("cardInput");
       const selectedDiv = document.getElementById("selectedCards");
       let current = input.value.trim().split(/\s+/).filter(c => c !== "");
-
-      // Animate in new cards
+      const {invalidCards, duplicateCards} = validateCards(current);
       selectedDiv.innerHTML = current.map(card => {
         let animClass = (!lastSelected.includes(card)) ? "animated-in" : "";
-        return `<span class="card-chip ${animClass}" id="chip-${card}" onclick="removeCard('${card}')">
+        let extraClass = " " + (suitClass[parseCard(card)[1]] || "");
+        if (invalidCards.includes(card)) extraClass += " invalid";
+        else if (duplicateCards.includes(card)) extraClass += " duplicate";
+        return `<span class="card-chip${extraClass} ${animClass}" id="chip-${card}" onclick="removeCard('${card}')">
           <img src="${cardImageURL(card)}" alt="${card}" style="width:32px;vertical-align:middle;">
           ×
         </span>`;
       }).join(" ");
-      // Animate out removed cards
       lastSelected.forEach(card => {
         if (!current.includes(card)) {
           const chip = document.getElementById(`chip-${card}`);
@@ -444,26 +536,41 @@
         }
       });
       lastSelected = current;
-      // Update card count
       document.getElementById("cardCount").textContent = `(${current.length} selected)`;
+      highlightInput(current, invalidCards, duplicateCards);
     }
-
+    function highlightInput(cards, invalidCards, duplicateCards) {
+      const input = document.getElementById("cardInput");
+      let html = "";
+      let split = input.value.trim().split(/\s+/).filter(c => c !== "");
+      split.forEach((card, idx) => {
+        let c = card;
+        if (invalidCards.includes(card)) {
+          html += `<span class="invalid-card">${c}</span> `;
+        } else if (duplicateCards.includes(card)) {
+          html += `<span class="duplicate-card">${c}</span> `;
+        } else {
+          html += `${c} `;
+        }
+      });
+      document.getElementById("inputError").innerHTML = html.trim() ? html : "";
+      input.className = (invalidCards.length > 0 || duplicateCards.length > 0) ? "invalid" : "";
+    }
     function removeCard(card) {
       const input = document.getElementById("cardInput");
       let current = input.value.trim().split(/\s+/).filter(c => c !== "" && c !== card);
       input.value = current.join(" ");
       updateSelectedCards();
     }
-
-    document.getElementById("cardInput").addEventListener("input", updateSelectedCards);
-
-    // Dark mode toggle
-    document.getElementById("toggleDark").onclick = function() {
-      document.body.classList.toggle("dark");
-      this.innerHTML = document.body.classList.contains("dark") ? "☀️ Light Mode" : "🌙 Dark Mode";
-    };
-
-    // Random Hand Generator
+    // Debounce input validation for fast typing
+    let debounceTimer;
+    document.getElementById("cardInput").addEventListener("input", function() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(updateSelectedCards, 120);
+    });
+    document.getElementById("themeSelect").addEventListener("change", function() {
+      document.body.className = this.value;
+    });
     function generateRandomHand() {
       const allCards = [];
       for (let suit of suitList) {
@@ -471,7 +578,6 @@
           allCards.push(rank + suit);
         }
       }
-      // Shuffle and pick 13
       for (let i = allCards.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [allCards[i], allCards[j]] = [allCards[j], allCards[i]];
@@ -481,7 +587,6 @@
       updateSelectedCards();
       document.getElementById("result").innerHTML = "";
     }
-
     generateCardButtons();
     updateSelectedCards();
   </script>
