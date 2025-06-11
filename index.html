@@ -137,6 +137,53 @@
         grid-template-columns: repeat(6, 1fr);
       }
     }
+
+    /* DARK MODE STYLES */
+    body.dark {
+      background: linear-gradient(to right, #232526, #414345);
+      color: #e0e6f0;
+    }
+    body.dark header {
+      background: #111c2e;
+      color: #e0e6f0;
+    }
+    body.dark .container {
+      background: #232b38;
+      color: #e0e6f0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+    body.dark .result {
+      background: #1a202a;
+      border-left: 4px solid #4a90e2;
+    }
+    body.dark .card-button {
+      background: #2a3442;
+      border: 1px solid #3a4a5e;
+      color: #e0e6f0;
+    }
+    body.dark .card-button:hover {
+      background: #3a4a5e;
+    }
+    body.dark textarea {
+      background: #232b38;
+      color: #e0e6f0;
+      border: 1px solid #3a4a5e;
+    }
+    body.dark .action {
+      background: #4a90e2;
+      color: #fff;
+    }
+    body.dark .action:hover {
+      background: #2e86de;
+    }
+    body.dark .card-chip {
+      background: #2a3442;
+      color: #e0e6f0;
+      border: 1px solid #3a4a5e;
+    }
+    body.dark .card-chip:hover {
+      background: #3a4a5e;
+    }
   </style>
 </head>
 <body>
@@ -145,9 +192,15 @@
   </header>
 
   <div class="container">
+    <button class="action" id="toggleDark" style="float:right;margin-bottom:10px;">🌙 Dark Mode</button>
+    <div style="clear:both"></div>
+
     <div id="cardPicker"></div>
 
-    <p><strong>Selected Cards (max 13):</strong></p>
+    <p>
+      <strong>Selected Cards (max 13):</strong>
+      <span id="cardCount" style="font-weight:normal;color:#2e86de;"></span>
+    </p>
     <div id="selectedCards"></div>
     <textarea id="cardInput" placeholder="Click cards above to add them..."></textarea>
 
@@ -345,6 +398,7 @@
       });
     }
 
+    // Update card count and selected cards
     function updateSelectedCards() {
       const input = document.getElementById("cardInput");
       const selectedDiv = document.getElementById("selectedCards");
@@ -355,6 +409,8 @@
           ×
         </span>`
       ).join(" ");
+      // Update card count
+      document.getElementById("cardCount").textContent = `(${current.length} selected)`;
     }
 
     function removeCard(card) {
@@ -365,6 +421,12 @@
     }
 
     document.getElementById("cardInput").addEventListener("input", updateSelectedCards);
+
+    // Dark mode toggle
+    document.getElementById("toggleDark").onclick = function() {
+      document.body.classList.toggle("dark");
+      this.innerHTML = document.body.classList.contains("dark") ? "☀️ Light Mode" : "🌙 Dark Mode";
+    };
 
     generateCardButtons();
     updateSelectedCards();
