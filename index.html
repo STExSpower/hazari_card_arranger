@@ -109,6 +109,7 @@
       height: 56px;
       width: 48px;
       display: flex;
+      flex-direction: column; /* CHANGED: for vertical stacking */
       align-items: center;
       justify-content: center;
       font-size: 20px;
@@ -122,6 +123,27 @@
       border: 2.5px solid var(--primary);
       box-shadow: 0 4px 16px rgba(46,134,222,0.18);
       transform: scale(1.08);
+    }
+    .card-rank-text { /* ADDED: for card text under image */
+      font-size: 15px;
+      font-weight: 600;
+      margin-top: 2px;
+      line-height: 1;
+      color: #222;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 2px #fff, 0 0 1px #eee;
+      user-select: none;
+      pointer-events: none;
+      display: block;
+    }
+    .card-button .card-rank-text.heart,
+    .card-button .card-rank-text.diamond {
+      color: var(--danger);
+      text-shadow: 0 1px 2px #fff, 0 0 1px #fdd;
+    }
+    .card-button .card-rank-text.spade,
+    .card-button .card-rank-text.club {
+      color: #222;
     }
     textarea {
       width: 100%;
@@ -271,7 +293,9 @@
     @media screen and (max-width: 600px) {
       .container { padding: 6px 1vw 10px 1vw; }
       .card-grid { grid-template-columns: repeat(6, 1fr); gap: 4px; }
-      .card-button { width: 38px; height: 38px; font-size: 15px; }
+      .card-button { width: 38px; height: 54px; font-size: 15px; }
+      .card-button img { width: 28px !important; } /* ADDED: smaller image */
+      .card-rank-text { font-size: 13px; margin-top: 1px; } /* ADDED: smaller text */
       button.action { font-size: 15px; padding: 10px 10px; }
       .card-chip { font-size: 15px; min-width: 32px; min-height: 28px; }
       .result { font-size: 15px; padding: 10px; }
@@ -475,7 +499,11 @@
           const btn = document.createElement("button");
           btn.className = "card-button";
           btn.setAttribute("aria-label", `${rank} of ${suitNames[suit]}`);
-          btn.innerHTML = `<img src="${cardImageURL(card)}" alt="${card}" style="width:38px;vertical-align:middle;">`;
+          // CHANGED: Add rank and suit text under image
+          btn.innerHTML = `
+            <img src="${cardImageURL(card)}" alt="${card}" style="width:38px;vertical-align:middle;">
+            <span class="card-rank-text ${suitClass[suit]}">${rank}${suits[suit]}</span>
+          `;
           btn.onclick = function () {
             const input = document.getElementById("cardInput");
             let current = input.value.trim().split(/\s+/).filter(c => c !== "");
