@@ -164,6 +164,50 @@
       from { opacity: 0; transform: scale(0.95);}
       to   { opacity: 1; transform: scale(1);}
     }
+    /* Password toggle icon */
+    .password-toggle {
+      position: absolute;
+      right: 38px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #b3c6e0;
+      font-size: 1.2em;
+      z-index: 10;
+      transition: color 0.2s;
+    }
+    .password-toggle:hover { color: var(--primary); }
+    /* Remember me */
+    .remember-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 10px;
+      margin-top: -8px;
+      font-size: 15px;
+      color: #444;
+      gap: 7px;
+    }
+    .remember-row input[type="checkbox"] {
+      accent-color: var(--primary);
+      width: 18px;
+      height: 18px;
+      margin-right: 4px;
+    }
+    /* Privacy/Terms */
+    .login-footer-links {
+      margin-top: 18px;
+      font-size: 14px;
+      color: #888;
+      text-align: center;
+    }
+    .login-footer-links a {
+      color: var(--primary);
+      text-decoration: underline;
+      margin: 0 6px;
+      transition: color 0.2s;
+    }
+    .login-footer-links a:hover { color: var(--primary-dark);}
     /* --- END LOGIN FORM --- */
     .theme-selector {
       float: right;
@@ -186,6 +230,135 @@
     .theme-selector select:focus {
       border: 2px solid var(--primary);
     }
+    .profile-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 18px;
+      margin-bottom: 10px;
+      margin-top: 0;
+      font-size: 1em;
+    }
+    .profile-pic {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #b3c6e0;
+      margin-right: 7px;
+      background: #f7f7f7;
+    }
+    .profile-username {
+      font-weight: bold;
+      color: var(--primary-dark);
+      margin-right: 7px;
+    }
+    .logout-btn {
+      background: var(--danger);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 7px 16px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-left: 7px;
+    }
+    .logout-btn:hover { background: #c0392b; }
+    .settings-btn, .help-btn, .history-btn, .stats-btn, .leaderboard-btn {
+      background: #e3e9f7;
+      color: var(--primary-dark);
+      border: none;
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 1em;
+      cursor: pointer;
+      margin-left: 7px;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .settings-btn:hover, .help-btn:hover, .history-btn:hover, .stats-btn:hover, .leaderboard-btn:hover {
+      background: #d0e6ff;
+    }
+    .tooltip {
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #222;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      z-index: 100;
+    }
+    .settings-btn:hover .tooltip,
+    .help-btn:hover .tooltip,
+    .history-btn:hover .tooltip,
+    .stats-btn:hover .tooltip,
+    .leaderboard-btn:hover .tooltip {
+      opacity: 1;
+    }
+    .modal-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.25);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.18);
+      padding: 28px 24px 18px 24px;
+      min-width: 320px;
+      max-width: 95vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      animation: fadeIn 0.3s;
+    }
+    .modal h2 { margin-top: 0; }
+    .modal-close {
+      position: absolute;
+      top: 10px; right: 16px;
+      font-size: 1.5em;
+      color: #888;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--danger);}
+    .modal input[type="file"] { margin-top: 10px; }
+    .modal label { font-weight: bold; }
+    .modal select, .modal input[type="checkbox"] { margin-bottom: 10px; }
+    .modal .stat-table { width: 100%; border-collapse: collapse; margin-top: 10px;}
+    .modal .stat-table th, .modal .stat-table td { border: 1px solid #e3e9f7; padding: 6px 10px; text-align: left;}
+    .modal .stat-table th { background: #f7f7f7;}
+    .modal .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 10px;}
+    .modal .leaderboard-table th, .modal .leaderboard-table td { border: 1px solid #e3e9f7; padding: 6px 10px; text-align: left;}
+    .modal .leaderboard-table th { background: #f7f7f7;}
+    .loading-spinner {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      border: 4px solid #e3e9f7;
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+    /* ... (rest of your CSS unchanged, see previous code for card grid, chips, etc.) ... */
     .suit-title {
       font-size: 19px;
       font-weight: bold;
@@ -395,6 +568,7 @@
     @media screen and (max-width: 900px) {
       .container { max-width: 99vw; padding: 12px 2vw 18px 2vw; }
       #loginContainer { max-width: 99vw; padding: 12px 2vw 18px 2vw; }
+      .modal { min-width: 90vw; }
     }
     @media screen and (max-width: 600px) {
       .container { padding: 6px 1vw 10px 1vw; }
@@ -409,6 +583,7 @@
       textarea { font-size: 15px; }
       .theme-selector select { font-size: 13px; }
       h1 { font-size: 1.3em; }
+      .profile-bar { flex-direction: column; align-items: flex-end; gap: 7px;}
     }
     /* Theme overrides (as before, omitted for brevity) */
     body.theme-dark { background: linear-gradient(135deg, #232526 0%, #414345 100%); color: #e0e6f0; }
@@ -463,18 +638,51 @@
   <div id="loginContainer">
     <div class="login-icon"><i class="fa-solid fa-lock"></i></div>
     <h2>Login</h2>
-    <form id="loginForm" autocomplete="off" onsubmit="return false;">
+    <form id="loginForm" autocomplete="off" onsubmit="return false;" style="position:relative;">
       <input type="text" id="loginUser" class="login-input" placeholder="Username" autocomplete="off" required>
-      <input type="password" id="loginPass" class="login-input" placeholder="Password" autocomplete="off" required>
+      <div style="position:relative;">
+        <input type="password" id="loginPass" class="login-input" placeholder="Password" autocomplete="off" required style="padding-right:38px;">
+        <span class="password-toggle" id="togglePassword" title="Show/Hide Password">
+          <i class="fa-regular fa-eye" id="eyeIcon"></i>
+        </span>
+      </div>
+      <div class="remember-row">
+        <input type="checkbox" id="rememberMe">
+        <label for="rememberMe" style="cursor:pointer;">Remember Me</label>
+      </div>
       <div id="loginError" class="login-error"></div>
       <button class="login-btn" id="loginBtn" type="submit"><i class="fa-solid fa-arrow-right-to-bracket"></i>Login</button>
     </form>
+    <div class="login-footer-links">
+      <a href="#" onclick="alert('Demo only!');return false;">Privacy Policy</a>|
+      <a href="#" onclick="alert('Demo only!');return false;">Terms &amp; Conditions</a>
+    </div>
   </div>
   <div id="mainApp" style="display:none;">
     <header>
       <h1><i class="fa-solid fa-crown"></i> Hazari Card Arranger</h1>
     </header>
     <div class="container">
+      <div class="profile-bar" id="profileBar">
+        <img src="https://i.ibb.co/6b2w6bG/avatar-boy.png" id="profilePic" class="profile-pic" alt="Profile">
+        <span class="profile-username" id="profileUsername"></span>
+        <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        <button class="settings-btn" id="settingsBtn"><i class="fa-solid fa-gear"></i>
+          <span class="tooltip">Settings</span>
+        </button>
+        <button class="help-btn" id="helpBtn"><i class="fa-solid fa-circle-question"></i>
+          <span class="tooltip">Help / FAQ</span>
+        </button>
+        <button class="history-btn" id="historyBtn"><i class="fa-solid fa-clock-rotate-left"></i>
+          <span class="tooltip">Arrangement History</span>
+        </button>
+        <button class="stats-btn" id="statsBtn"><i class="fa-solid fa-chart-bar"></i>
+          <span class="tooltip">Statistics</span>
+        </button>
+        <button class="leaderboard-btn" id="leaderboardBtn"><i class="fa-solid fa-trophy"></i>
+          <span class="tooltip">Leaderboard</span>
+        </button>
+      </div>
       <div class="theme-selector">
         <select id="themeSelect" aria-label="Theme Selector">
           <option value="theme-light">☀️ Light</option>
@@ -493,7 +701,7 @@
       <div id="selectedCards"></div>
       <textarea id="cardInput" placeholder="Click cards above to add them..."></textarea>
       <div id="inputError" style="color:var(--danger);font-weight:bold;margin-bottom:8px;"></div>
-      <button class="action" onclick="arrangeCards()"><i class="fa-solid fa-layer-group"></i>Arrange</button>
+      <button class="action" id="arrangeBtn" onclick="arrangeCards()"><i class="fa-solid fa-layer-group"></i>Arrange</button>
       <button class="action" onclick="clearInput()"><i class="fa-solid fa-eraser"></i>Clear</button>
       <button class="action" onclick="generateRandomHand()"><i class="fa-solid fa-shuffle"></i>Random Hand</button>
       <div class="result" id="result"></div>
@@ -502,6 +710,7 @@
       <span>Made with <i class="fa-solid fa-heart" style="color:#e74c3c"></i> for Hazari lovers | <a href="https://github.com/" style="color:inherit;text-decoration:underline;">GitHub</a></span>
     </footer>
   </div>
+  <div id="modalRoot"></div>
   <script>
     // --- LOGIN SYSTEM ---
     const loginForm = document.getElementById('loginForm');
@@ -510,6 +719,30 @@
     const loginError = document.getElementById('loginError');
     const loginBtn = document.getElementById('loginBtn');
     let loginTries = 0;
+
+    // Password Show/Hide Toggle
+    const loginPass = document.getElementById('loginPass');
+    const togglePassword = document.getElementById('togglePassword');
+    const eyeIcon = document.getElementById('eyeIcon');
+    togglePassword.addEventListener('click', function() {
+      if (loginPass.type === "password") {
+        loginPass.type = "text";
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+      } else {
+        loginPass.type = "password";
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+      }
+    });
+
+    // Remember Me: Save username to localStorage if checked
+    const rememberMe = document.getElementById('rememberMe');
+    // On page load, check if username is saved
+    if (localStorage.getItem('rememberedUser')) {
+      document.getElementById('loginUser').value = localStorage.getItem('rememberedUser');
+      rememberMe.checked = true;
+    }
 
     loginForm.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -520,11 +753,19 @@
         const user = document.getElementById('loginUser').value.trim();
         const pass = document.getElementById('loginPass').value;
         if (user === "akib" && pass === "1234") {
-          // Success
+          // Remember Me functionality
+          if (rememberMe.checked) {
+            localStorage.setItem('rememberedUser', user);
+          } else {
+            localStorage.removeItem('rememberedUser');
+          }
+          // Save user info for profile
+          localStorage.setItem('currentUser', user);
           loginContainer.style.display = "none";
           mainApp.style.display = "";
           document.body.scrollTop = 0;
           document.documentElement.scrollTop = 0;
+          afterLoginInit();
         } else {
           loginTries++;
           loginError.textContent = "Invalid username or password!";
@@ -564,6 +805,67 @@
       "Indi": 1
     };
 
+    // User Profile & Settings
+    const defaultProfilePic = "https://i.ibb.co/6b2w6bG/avatar-boy.png";
+    function getProfilePic() {
+      return localStorage.getItem('profilePic') || defaultProfilePic;
+    }
+    function setProfilePic(url) {
+      localStorage.setItem('profilePic', url);
+      document.getElementById('profilePic').src = url;
+    }
+    function getCurrentUser() {
+      return localStorage.getItem('currentUser') || "User";
+    }
+    function setCurrentUser(user) {
+      localStorage.setItem('currentUser', user);
+    }
+
+    // Arrangement History
+    function saveHistory(cards, sets) {
+      let history = JSON.parse(localStorage.getItem('arrangeHistory') || "[]");
+      history.unshift({
+        time: new Date().toLocaleString(),
+        cards: cards,
+        sets: sets
+      });
+      if (history.length > 20) history = history.slice(0, 20);
+      localStorage.setItem('arrangeHistory', JSON.stringify(history));
+    }
+    function getHistory() {
+      return JSON.parse(localStorage.getItem('arrangeHistory') || "[]");
+    }
+
+    // Statistics
+    function updateStats(sets) {
+      let stats = JSON.parse(localStorage.getItem('arrangeStats') || "{}");
+      stats.total = (stats.total || 0) + 1;
+      sets.forEach(set => {
+        const [type] = getCombinationType(set);
+        stats[type] = (stats[type] || 0) + 1;
+      });
+      localStorage.setItem('arrangeStats', JSON.stringify(stats));
+    }
+    function getStats() {
+      return JSON.parse(localStorage.getItem('arrangeStats') || "{}");
+    }
+
+    // Leaderboard (Demo: top 5 by total arrangement)
+    function updateLeaderboard() {
+      let stats = getStats();
+      let user = getCurrentUser();
+      let leaderboard = JSON.parse(localStorage.getItem('leaderboard') || "[]");
+      let found = leaderboard.find(x => x.user === user);
+      if (found) found.total = stats.total || 0;
+      else leaderboard.push({user, total: stats.total || 0});
+      leaderboard.sort((a,b) => b.total - a.total);
+      leaderboard = leaderboard.slice(0, 5);
+      localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+    }
+    function getLeaderboard() {
+      return JSON.parse(localStorage.getItem('leaderboard') || "[]");
+    }
+
     function parseCard(card) {
       return card.length === 3 ? [card.slice(0,2), card[2]] : [card[0], card[1]];
     }
@@ -601,47 +903,68 @@
       const [type, vals] = getCombinationType(cards);
       return [comboRank[type], vals];
     }
+
     // Super fast greedy arrangement
     function arrangeCards() {
       const input = document.getElementById("cardInput").value.trim().split(/\s+/).filter(c => c !== "");
       const {invalidCards, duplicateCards} = validateCards(input);
-      if (input.length !== 13 || invalidCards.length > 0 || duplicateCards.length > 0) {
-        alert("Please enter exactly 13 valid, unique cards.");
+      const result = document.getElementById("result");
+      if (input.length !== 13) {
+        showError("Please enter exactly 13 cards.");
         return;
       }
-      let cards = [...input];
-      let sets = [];
-      function findBestSet(n) {
-        let best = null, bestRank = -1, bestVals = [];
-        let len = cards.length;
-        let indices = Array.from({length: len}, (_, i) => i);
-        function* combinations(arr, k, start=0, path=[]) {
-          if (path.length === k) yield path;
-          else for (let i = start; i < arr.length; i++) yield* combinations(arr, k, i+1, [...path, arr[i]]);
-        }
-        for (let idxs of combinations(indices, n)) {
-          let set = idxs.map(i => cards[i]);
-          let [rank, vals] = rankCombo(set);
-          if (rank > bestRank || (rank === bestRank && vals > bestVals)) {
-            best = set; bestRank = rank; bestVals = vals;
+      if (invalidCards.length > 0) {
+        showError("Invalid card(s): " + invalidCards.join(", "));
+        return;
+      }
+      if (duplicateCards.length > 0) {
+        showError("Duplicate card(s): " + duplicateCards.join(", "));
+        return;
+      }
+      // Loading spinner
+      result.innerHTML = `<span class="loading-spinner"></span>Arranging cards...`;
+      document.getElementById("arrangeBtn").disabled = true;
+      setTimeout(() => {
+        let cards = [...input];
+        let sets = [];
+        function findBestSet(n) {
+          let best = null, bestRank = -1, bestVals = [];
+          let len = cards.length;
+          let indices = Array.from({length: len}, (_, i) => i);
+          function* combinations(arr, k, start=0, path=[]) {
+            if (path.length === k) yield path;
+            else for (let i = start; i < arr.length; i++) yield* combinations(arr, k, i+1, [...path, arr[i]]);
           }
+          for (let idxs of combinations(indices, n)) {
+            let set = idxs.map(i => cards[i]);
+            let [rank, vals] = rankCombo(set);
+            if (rank > bestRank || (rank === bestRank && vals > bestVals)) {
+              best = set; bestRank = rank; bestVals = vals;
+            }
+          }
+          return best;
         }
-        return best;
-      }
-      for (let size of [3,3,3,4]) {
-        let set = findBestSet(size);
-        sets.push(set);
-        cards = cards.filter(c => !set.includes(c));
-      }
-      // Show result as before
-      const result = document.getElementById("result");
-      result.innerHTML = "<h2>Best Arrangement (Super Fast)</h2>" + 
-        sets.map((set, i) => {
-          const [type, values] = getCombinationType(set);
-          return `<div class="set">Set ${i+1} (<strong>${type}</strong>): ${
-            set.map(card => `<img src="${cardImageURL(card)}" alt="${card}" style="width:38px;vertical-align:middle;">`).join(" ")
-          }</div>`;
-        }).join("");
+        for (let size of [3,3,3,4]) {
+          let set = findBestSet(size);
+          sets.push(set);
+          cards = cards.filter(c => !set.includes(c));
+        }
+        // Show result
+        result.innerHTML = "<h2>Best Arrangement (Super Fast)</h2>" + 
+          sets.map((set, i) => {
+            const [type, values] = getCombinationType(set);
+            return `<div class="set">Set ${i+1} (<strong>${type}</strong>): ${
+              set.map(card => `<img src="${cardImageURL(card)}" alt="${card}" style="width:38px;vertical-align:middle;">`).join(" ")
+            }</div>`;
+          }).join("");
+        saveHistory(input, sets);
+        updateStats(sets);
+        updateLeaderboard();
+        document.getElementById("arrangeBtn").disabled = false;
+      }, 900);
+    }
+    function showError(msg) {
+      document.getElementById("result").innerHTML = `<div style="color:var(--danger);font-weight:bold;"><i class="fa-solid fa-circle-exclamation"></i> ${msg}</div>`;
     }
     function clearInput() {
       document.getElementById("cardInput").value = "";
@@ -650,6 +973,7 @@
     }
     function generateCardButtons() {
       const container = document.getElementById("cardPicker");
+      container.innerHTML = "";
       suitList.forEach(suit => {
         const title = document.createElement('div');
         title.className = 'suit-title';
@@ -670,11 +994,11 @@
             const input = document.getElementById("cardInput");
             let current = input.value.trim().split(/\s+/).filter(c => c !== "");
             if (current.length >= 13) {
-              alert("You've already selected 13 cards.");
+              showError("You've already selected 13 cards.");
               return;
             }
             if (current.includes(card)) {
-              alert("This card is already selected.");
+              showError("This card is already selected.");
               return;
             }
             current.push(card);
@@ -783,12 +1107,163 @@
       updateSelectedCards();
       document.getElementById("result").innerHTML = "";
     }
-    // Only generate card buttons after login
+
+    // User Profile, Settings, Logout, etc.
     function afterLoginInit() {
+      // Profile
+      document.getElementById('profileUsername').textContent = getCurrentUser();
+      document.getElementById('profilePic').src = getProfilePic();
+      // Card buttons
       generateCardButtons();
       updateSelectedCards();
     }
-    // If already logged in (for dev), show main app
+    // Logout
+    document.getElementById('logoutBtn').onclick = function() {
+      localStorage.removeItem('currentUser');
+      mainApp.style.display = "none";
+      loginContainer.style.display = "";
+      document.getElementById('loginPass').value = "";
+      document.getElementById('loginUser').focus();
+    };
+
+    // Settings Modal
+    document.getElementById('settingsBtn').onclick = function() {
+      showModal(`
+        <h2><i class="fa-solid fa-gear"></i> Settings</h2>
+        <label>Theme:</label>
+        <select id="modalThemeSelect">
+          <option value="theme-light">☀️ Light</option>
+          <option value="theme-dark">🌙 Dark</option>
+          <option value="theme-blue">💧 Blue</option>
+          <option value="theme-green">🌿 Green</option>
+          <option value="theme-pink">🌸 Pink</option>
+        </select>
+        <br>
+        <label>Language:</label>
+        <select id="modalLangSelect">
+          <option value="en">English</option>
+          <option value="bn">Bengali</option>
+        </select>
+        <br>
+        <label>Sound:</label>
+        <input type="checkbox" id="modalSound" checked> Enable Sound
+        <br>
+        <label>Profile Picture:</label>
+        <input type="file" id="modalPicInput" accept="image/*">
+        <br>
+        <img src="${getProfilePic()}" id="modalPicPreview" style="width:60px;height:60px;border-radius:50%;margin-top:8px;">
+        <br>
+        <button onclick="closeModal()" style="margin-top:12px;">Close</button>
+      `);
+      document.getElementById('modalThemeSelect').value = document.body.className;
+      document.getElementById('modalThemeSelect').onchange = function() {
+        document.body.className = this.value;
+        document.getElementById('themeSelect').value = this.value;
+      };
+      document.getElementById('modalLangSelect').onchange = function() {
+        // Demo only
+        alert("Language switch is demo only!");
+      };
+      document.getElementById('modalSound').onchange = function() {
+        localStorage.setItem('soundOn', this.checked ? "1" : "0");
+      };
+      document.getElementById('modalPicInput').onchange = function(e) {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith("image/")) {
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            setProfilePic(ev.target.result);
+            document.getElementById('modalPicPreview').src = ev.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+    };
+
+    // Help/FAQ Modal
+    document.getElementById('helpBtn').onclick = function() {
+      showModal(`
+        <h2><i class="fa-solid fa-circle-question"></i> Help / FAQ</h2>
+        <ul>
+          <li><b>How to select cards?</b> Click on cards or type in the box.</li>
+          <li><b>How to arrange?</b> Select 13 cards, then click Arrange.</li>
+          <li><b>How to clear?</b> Click the Clear button.</li>
+          <li><b>How to change theme?</b> Use the theme dropdown.</li>
+          <li><b>How to see history?</b> Click the <i class="fa-solid fa-clock-rotate-left"></i> button.</li>
+          <li><b>How to see stats?</b> Click the <i class="fa-solid fa-chart-bar"></i> button.</li>
+          <li><b>How to logout?</b> Click the Logout button.</li>
+        </ul>
+        <button onclick="closeModal()">Close</button>
+      `);
+    };
+
+    // Arrangement History Modal
+    document.getElementById('historyBtn').onclick = function() {
+      let history = getHistory();
+      showModal(`
+        <h2><i class="fa-solid fa-clock-rotate-left"></i> Arrangement History</h2>
+        ${history.length === 0 ? "<div>No history found.</div>" : ""}
+        <div style="max-height:300px;overflow-y:auto;">
+        ${history.map(h => `
+          <div style="margin-bottom:10px;">
+            <b>${h.time}</b><br>
+            Cards: ${h.cards.join(" ")}<br>
+            Sets: ${h.sets.map((set,i) => `<span style="font-size:13px;">[${set.join(" ")}]</span>`).join(" ")}
+          </div>
+        `).join("")}
+        </div>
+        <button onclick="closeModal()">Close</button>
+      `);
+    };
+
+    // Statistics Modal
+    document.getElementById('statsBtn').onclick = function() {
+      let stats = getStats();
+      showModal(`
+        <h2><i class="fa-solid fa-chart-bar"></i> Statistics</h2>
+        <table class="stat-table">
+          <tr><th>Total Arrangements</th><td>${stats.total || 0}</td></tr>
+          <tr><th>Troy</th><td>${stats.Troy || 0}</td></tr>
+          <tr><th>Colour Run</th><td>${stats["Colour Run"] || 0}</td></tr>
+          <tr><th>Run</th><td>${stats.Run || 0}</td></tr>
+          <tr><th>Colour</th><td>${stats.Colour || 0}</td></tr>
+          <tr><th>Pair</th><td>${stats.Pair || 0}</td></tr>
+          <tr><th>Indi</th><td>${stats.Indi || 0}</td></tr>
+        </table>
+        <button onclick="closeModal()">Close</button>
+      `);
+    };
+
+    // Leaderboard Modal
+    document.getElementById('leaderboardBtn').onclick = function() {
+      let leaderboard = getLeaderboard();
+      showModal(`
+        <h2><i class="fa-solid fa-trophy"></i> Leaderboard</h2>
+        <table class="leaderboard-table">
+          <tr><th>Rank</th><th>User</th><th>Arrangements</th></tr>
+          ${leaderboard.map((u,i) => `<tr><td>${i+1}</td><td>${u.user}</td><td>${u.total}</td></tr>`).join("")}
+        </table>
+        <button onclick="closeModal()">Close</button>
+      `);
+    };
+
+    // Modal functions
+    function showModal(html) {
+      const modalRoot = document.getElementById('modalRoot');
+      modalRoot.innerHTML = `
+        <div class="modal-bg" onclick="if(event.target===this)closeModal()">
+          <div class="modal">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            ${html}
+          </div>
+        </div>
+      `;
+    }
+    function closeModal() {
+      document.getElementById('modalRoot').innerHTML = "";
+    }
+
+    // Only generate card buttons after login
     if(mainApp.style.display !== "none") afterLoginInit();
     // When login is successful, call afterLoginInit
     const observer = new MutationObserver(function(mutations){
