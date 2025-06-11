@@ -184,6 +184,22 @@
     body.dark .card-chip:hover {
       background: #3a4a5e;
     }
+
+    /* Card Animation */
+    @keyframes cardFadeIn {
+      from { opacity: 0; transform: scale(0.8);}
+      to   { opacity: 1; transform: scale(1);}
+    }
+    @keyframes cardFadeOut {
+      from { opacity: 1; transform: scale(1);}
+      to   { opacity: 0; transform: scale(0.8);}
+    }
+    .card-chip.animated-in {
+      animation: cardFadeIn 0.3s;
+    }
+    .card-chip.animated-out {
+      animation: cardFadeOut 0.3s;
+    }
   </style>
 </head>
 <body>
@@ -206,6 +222,7 @@
 
     <button class="action" onclick="arrangeCards()">Arrange</button>
     <button class="action" onclick="clearInput()">Clear</button>
+    <button class="action" onclick="generateRandomHand()">Random Hand</button>
 
     <div class="result" id="result"></div>
   </div>
@@ -398,17 +415,35 @@
       });
     }
 
-    // Update card count and selected cards
+    // Card Animation: keep track of last selected cards
+    let lastSelected = [];
+
     function updateSelectedCards() {
       const input = document.getElementById("cardInput");
       const selectedDiv = document.getElementById("selectedCards");
       let current = input.value.trim().split(/\s+/).filter(c => c !== "");
-      selectedDiv.innerHTML = current.map(card => 
-        `<span class="card-chip" onclick="removeCard('${card}')">
+
+      // Animate in new cards
+      selectedDiv.innerHTML = current.map(card => {
+        let animClass = (!lastSelected.includes(card)) ? "animated-in" : "";
+        return `<span class="card-chip ${animClass}" id="chip-${card}" onclick="removeCard('${card}')">
           <img src="${cardImageURL(card)}" alt="${card}" style="width:32px;vertical-align:middle;">
           ×
-        </span>`
-      ).join(" ");
+        </span>`;
+      }).join(" ");
+      // Animate out removed cards
+      lastSelected.forEach(card => {
+        if (!current.includes(card)) {
+          const chip = document.getElementById(`chip-${card}`);
+          if (chip) {
+            chip.classList.add("animated-out");
+            setTimeout(() => {
+              if (chip.parentNode) chip.parentNode.removeChild(chip);
+            }, 300);
+          }
+        }
+      });
+      lastSelected = current;
       // Update card count
       document.getElementById("cardCount").textContent = `(${current.length} selected)`;
     }
@@ -427,6 +462,25 @@
       document.body.classList.toggle("dark");
       this.innerHTML = document.body.classList.contains("dark") ? "☀️ Light Mode" : "🌙 Dark Mode";
     };
+
+    // Random Hand Generator
+    function generateRandomHand() {
+      const allCards = [];
+      for (let suit of suitList) {
+        for (let rank of rankList) {
+          allCards.push(rank + suit);
+        }
+      }
+      // Shuffle and pick 13
+      for (let i = allCards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [allCards[i], allCards[j]] = [allCards[j], allCards[i]];
+      }
+      const hand = allCards.slice(0, 13);
+      document.getElementById("cardInput").value = hand.join(" ");
+      updateSelectedCards();
+      document.getElementById("result").innerHTML = "";
+    }
 
     generateCardButtons();
     updateSelectedCards();
